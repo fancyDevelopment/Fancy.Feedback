@@ -39,7 +39,7 @@ namespace Fancy.Feedback.Core.Infrastructure
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer("Server=.;Database=aspnet5-WebApplication1;Trusted_Connection=True");
+            //optionsBuilder.UseSqlServer("Server=.;Database=aspnet5-WebApplication1;Trusted_Connection=True");
         }
 
         /// <summary>
