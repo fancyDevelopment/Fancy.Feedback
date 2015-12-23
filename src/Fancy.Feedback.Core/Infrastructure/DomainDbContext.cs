@@ -1,5 +1,4 @@
-﻿using Fancy.Feedback.Core.Subdomains.Feedbacks.Domain.ValueObjects;
-using Fancy.Feedback.Core.Subdomains.Identity.Domain;
+﻿using Fancy.Feedback.Core.Subdomains.Identity.Domain;
 using Fancy.Feedback.Core.Subdomains.Sessions.Domain;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
@@ -52,8 +51,6 @@ namespace Fancy.Feedback.Core.Infrastructure
             base.OnModelCreating(builder);
 
             builder.Entity<Session>().HasMany<Subdomains.Feedbacks.Domain.Feedback>();
-
-            builder.Entity<Subdomains.Feedbacks.Domain.Feedback>().HasOne<Rating>();
         }
     }
 }
