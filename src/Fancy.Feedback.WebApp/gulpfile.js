@@ -38,7 +38,12 @@ gulp.task("clean:images", function (cb) {
     rimraf(paths.imagesDest, cb);
 });
 
-gulp.task("clean", ["clean:js", "clean:font", "clean:css", "clean:images"]);
+gulp.task("clean:infrastructure", function (cb) {
+    rimraf(paths.webroot + "Web.config", cb);
+    rimraf(paths.webroot + "favicon.ico", cb);
+});
+
+gulp.task("clean", ["clean:js", "clean:font", "clean:css", "clean:images", "clean:infrastructure"]);
 
 gulp.task("min:js", function () {
 
@@ -78,7 +83,15 @@ gulp.task("images", function () {
 
 });
 
-gulp.task("build", ["min:js", "min:css", "images"]);
+gulp.task("infrastructure", function () {
+
+    // Move infrastructure items to wwwroot
+    gulp.src(["./Web/favicon.ico", "./Web/Web.config"])
+		.pipe(gulp.dest(paths.webroot));
+
+});
+
+gulp.task("build", ["min:js", "min:css", "images", "infrastructure"]);
 
 gulp.task("watch", function () {
     livereload.listen();
