@@ -1,12 +1,15 @@
 ﻿using Fancy.Feedback.Core.Subdomains.Identity.Domain;
 using Fancy.Feedback.Core.Subdomains.Sessions.Domain;
+using Fancy.Feedback.Core.Subdomains.Sessions.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 
 namespace Fancy.Feedback.Core.Infrastructure
 {
-    public class DomainDbContext : IdentityDbContext<ApplicationUser>
+    public class DomainDbContext : IdentityDbContext<ApplicationUser>, ISessionsContext
     {
+        private readonly string _connectionString;
+
         /// <summary>
         /// Gets or sets the events.
         /// </summary>
@@ -39,7 +42,7 @@ namespace Fancy.Feedback.Core.Infrastructure
         {
             base.OnConfiguring(optionsBuilder);
 
-            //optionsBuilder.UseSqlServer("Server=.;Database=aspnet5-WebApplication1;Trusted_Connection=True");
+            //optionsBuilder.UseSqlServer(_connectionString);
         }
 
         /// <summary>
@@ -51,6 +54,11 @@ namespace Fancy.Feedback.Core.Infrastructure
             base.OnModelCreating(builder);
 
             builder.Entity<Session>().HasMany<Subdomains.Feedbacks.Domain.Feedback>();
+        }
+
+        public void Commit()
+        {
+            SaveChanges();
         }
     }
 }

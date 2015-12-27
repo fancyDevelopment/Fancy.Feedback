@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using Fancy.Feedback.Core;
 using Fancy.Feedback.Core.Infrastructure;
 using Fancy.Feedback.Core.Subdomains.Identity.Domain;
 using Microsoft.AspNet.Builder;
@@ -12,6 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Fancy.Feedback.WebApp.Services;
+using Fancy.SchemaFormBuilder;
+using System.Linq;
+using System.Reflection;
 
 namespace Fancy.Feedback.WebApp
 {
@@ -39,11 +42,15 @@ namespace Fancy.Feedback.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDefaultSchemaFormBuilder();
+
+            services.AddFancyFeedbackCore(Configuration["Data:DefaultConnection:ConnectionString"]);
+
             // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<DomainDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            //services.AddEntityFramework()
+            //    .AddSqlServer();
+                //.AddDbContext<DomainDbContext>(options =>
+                //    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<DomainDbContext>()
@@ -54,6 +61,16 @@ namespace Fancy.Feedback.WebApp
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            // Find all auto mapper profiles and register them
+            IEnumerable<Type> profiles = typeof(Startup).GetTypeInfo().Assembly.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x));
+
+            foreach (Type profile in profiles)
+            {
+                Mapper.AddProfile(Activator.CreateInstance(profile) as Profile);
+            }
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

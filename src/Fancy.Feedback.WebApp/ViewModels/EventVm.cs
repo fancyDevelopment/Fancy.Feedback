@@ -1,0 +1,25 @@
+﻿using Fancy.SchemaFormBuilder.Annotations;
+
+namespace Fancy.Feedback.WebApp.ViewModels
+{
+    public class EventVm
+    {
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        [FormRequired]
+        [FormTitle("Name")]
+        public string Name { get; set; }
+    }
+}
