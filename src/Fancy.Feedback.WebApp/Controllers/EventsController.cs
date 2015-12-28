@@ -30,8 +30,18 @@ namespace Fancy.Feedback.WebApp.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/meta")]
-        public IActionResult Meta()
+        [Route("[controller]/{id}", Name = "events-byId")]
+        public IActionResult GetById(int id)
+        {
+            EventDto eventDto = _eventsService.GetById(id);
+            EventVm eventVm = Mapper.Map<EventVm>(eventDto);
+
+            return Json(eventVm);
+        }
+
+        [HttpGet]
+        [Route("[controller]/create/desc", Name = "events-create-desc")]
+        public IActionResult Create()
         {
             // Create the schema and form description
             SchemaFormInfo schemaFormInfo = _schemaFormBuilder.CreateSchemaForm(typeof(EventVm));
@@ -42,5 +52,11 @@ namespace Fancy.Feedback.WebApp.Controllers
             return Json(resourceMetaVm);
         }
 
+        [HttpPut]
+        [Route("[controller]/create", Name = "events-create")]
+        public int Create(EventDto eventDto)
+        {
+            return 0;
+        }
     }
 }

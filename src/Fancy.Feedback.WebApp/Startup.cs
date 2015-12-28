@@ -15,6 +15,7 @@ using Fancy.Feedback.WebApp.Services;
 using Fancy.SchemaFormBuilder;
 using System.Linq;
 using System.Reflection;
+using Fancy.ResourceLinker;
 
 namespace Fancy.Feedback.WebApp
 {
@@ -43,14 +44,9 @@ namespace Fancy.Feedback.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDefaultSchemaFormBuilder();
+            services.AddResourceLinker();
 
             services.AddFancyFeedbackCore(Configuration["Data:DefaultConnection:ConnectionString"]);
-
-            // Add framework services.
-            //services.AddEntityFramework()
-            //    .AddSqlServer();
-                //.AddDbContext<DomainDbContext>(options =>
-                //    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<DomainDbContext>()
@@ -70,7 +66,13 @@ namespace Fancy.Feedback.WebApp
                 Mapper.AddProfile(Activator.CreateInstance(profile) as Profile);
             }
 
-            
+            // Find all link strategies and register them
+            IEnumerable<Type> linkStrategies = typeof(Startup).GetTypeInfo().Assembly.GetTypes().Where(x => typeof(ILinkStrategy).IsAssignableFrom(x));
+
+            foreach (Type linkStrategy in linkStrategies)
+            {
+                services.AddTransient(typeof (ILinkStrategy), linkStrategy);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

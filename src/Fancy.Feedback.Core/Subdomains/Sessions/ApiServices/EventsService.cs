@@ -16,6 +16,17 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.ApiServices
             _sessionsContext = sessionsContext;
         }
 
+        public int GetEventsCount()
+        {
+            return _sessionsContext.Events.Count();
+        }
+
+        public EventDto GetById(int id)
+        {
+            Event @event = _sessionsContext.Events.SingleOrDefault(e => e.Id == id);
+            return Mapper.Map<EventDto>(@event);
+        }
+
         public IEnumerable<EventDto> GetAllEvents()
         {
             IEnumerable<Event> events = _sessionsContext.Events;

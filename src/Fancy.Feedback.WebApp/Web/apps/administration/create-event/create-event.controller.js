@@ -2,18 +2,19 @@
     "use strict";
 
     angular.module("Fancy.Feedback.Apps.Administration")
-        .controller("CreateEventController", ["$scope", "$state", "$http", function ($scope, $state, $http) {
+        .controller("CreateEventController", ["$scope", "$state", "$http", "appStateService", function ($scope, $state, $http, appStateService) {
 
             var vm = this;
 
             vm.isSaving = false;
             vm.hasError = false;
 
-            // Get the url to the resource from the descriptions
-            var url = "/events/meta";
+            // Get the url to the action
+            var url = appStateService["actionUrl"];
+            var metaUrl = url + "/desc";
 
             // Get the required information to render the form
-            $http.get(url).success(function (data) {
+            $http.get(metaUrl).success(function (data) {
                 vm.schema = data.Schema;
                 vm.form = data.Form;
                 vm.event = {};
@@ -32,7 +33,7 @@
                     vm.isSaving = true;
 
                     // If the form is valid send data to web application
-                    $http.put(url, vm.coach).success(function () {
+                    $http.put(url, vm.event).success(function () {
 
                         vm.isSaving = false;
 
