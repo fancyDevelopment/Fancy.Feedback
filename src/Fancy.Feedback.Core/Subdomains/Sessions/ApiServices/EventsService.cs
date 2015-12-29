@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Fancy.Feedback.Core.Infrastructure;
 using Fancy.Feedback.Core.Subdomains.Sessions.Domain;
 using Fancy.Feedback.Core.Subdomains.Sessions.Dtos;
 using Fancy.Feedback.Core.Subdomains.Sessions.Repositories;
@@ -25,6 +26,34 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.ApiServices
         {
             Event @event = _sessionsContext.Events.SingleOrDefault(e => e.Id == id);
             return Mapper.Map<EventDto>(@event);
+        }
+
+        public PagedResultSet<EventDto> Find(string titleFilter = null, int page = 1, int pageSize = 100)
+        {
+            IQueryable<Event> events = _sessionsContext.Events.OrderBy(e => e.Name);
+
+            if (!string.IsNullOrEmpty(titleFilter))
+            {
+                events = events.Where(e => e.Name.Contains(titleFilter));
+            }
+
+            PagedResultSet<EventDto> result = events.CreateResultPage<Event, EventDto>(page, pageSize);
+
+            return result;
+        }
+
+        private static PagedResultSet<TDto> CreateResultPage<TEntiy, TDto>(IQueryable<TEntiy> events, int page, int pageSize)
+        {
+            IEnumerable<TEntiy> pagedEvents = events.Skip((page - 1)*pageSize).Take(pageSize).ToList();
+
+            PagedResultSet<TDto> result = new PagedResultSet<TDto>
+            {
+                Items = Mapper.Map<IEnumerable<TDto>>(pagedEvents),
+                TotalItems = events.Count(),
+                Page = page,
+                PageSize = pageSize
+            };
+            return result;
         }
 
         public IEnumerable<EventDto> GetAllEvents()

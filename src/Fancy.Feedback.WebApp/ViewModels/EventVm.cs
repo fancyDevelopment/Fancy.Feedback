@@ -1,8 +1,9 @@
-﻿using Fancy.SchemaFormBuilder.Annotations;
+﻿using Fancy.ResourceLinker.Models;
+using Fancy.SchemaFormBuilder.Annotations;
 
 namespace Fancy.Feedback.WebApp.ViewModels
 {
-    public class EventVm
+    public class EventVm : ResourceBase
     {
         /// <summary>
         /// Gets or sets the identifier.

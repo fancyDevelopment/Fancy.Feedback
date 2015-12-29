@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using Fancy.Feedback.Core.Infrastructure;
 using Fancy.Feedback.Core.Subdomains.Sessions.ApiServices;
 using Fancy.Feedback.Core.Subdomains.Sessions.Dtos;
 using Fancy.Feedback.WebApp.ViewModels;
+using Fancy.ResourceLinker;
 using Fancy.SchemaFormBuilder.Services;
 using Microsoft.AspNet.Mvc;
 
@@ -21,10 +22,10 @@ namespace Fancy.Feedback.WebApp.Controllers
 
         [HttpGet]
         [Route("[controller]")]
-        public IActionResult GetAll()
+        public IActionResult Find(string nameFilter = null, int page = 1, int pageSize = 30)
         {
-            IEnumerable<EventDto> eventDtos = _eventsService.GetAllEvents();
-            IEnumerable<EventVm> eventVms = Mapper.Map<IEnumerable<EventVm>>(eventDtos);
+            PagedResultSet<EventDto> eventDtos = _eventsService.Find(nameFilter, page, pageSize);
+            PagedResultSet<EventVm> eventVms = eventDtos.ConvertTo<EventVm>();
 
             return Json(eventVms);
         }
@@ -40,21 +41,24 @@ namespace Fancy.Feedback.WebApp.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/create/desc", Name = "events-create-desc")]
+        [Route("[controller]/create", Name = "events-create-desc")]
         public IActionResult Create()
         {
             // Create the schema and form description
             SchemaFormInfo schemaFormInfo = _schemaFormBuilder.CreateSchemaForm(typeof(EventVm));
-            ResourceMetaVm resourceMetaVm = new ResourceMetaVm();
-            resourceMetaVm.Schema = schemaFormInfo.Schema;
-            resourceMetaVm.Form = schemaFormInfo.Form;
+            ResourceMeta<EventVm> resourceMeta = new ResourceMeta<EventVm>();
+            resourceMeta.Schema = schemaFormInfo.Schema;
+            resourceMeta.Form = schemaFormInfo.Form;
+            resourceMeta.Model = new EventVm();
 
-            return Json(resourceMetaVm);
+            this.LinkResource(resourceMeta);
+
+            return Json(resourceMeta);
         }
 
         [HttpPut]
-        [Route("[controller]/create", Name = "events-create")]
-        public int Create(EventDto eventDto)
+        [Route("[controller]", Name = "events-create")]
+        public int Create([FromBody] EventDto eventDto)
         {
             return 0;
         }

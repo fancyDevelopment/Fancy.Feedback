@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Fancy.ResourceLinker.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Fancy.Feedback.WebApp.ViewModels
 {
-    public class ResourceMetaVm
+    public class ResourceMeta<TModel> : ResourceBase
     {
          /// <summary>
         /// Gets or sets the schema.
@@ -26,6 +27,6 @@ namespace Fancy.Feedback.WebApp.ViewModels
         /// <value>
         /// The model.
         /// </value>
-        public JToken Model { get; set; }
+        public TModel Model { get; set; }
     }
 }

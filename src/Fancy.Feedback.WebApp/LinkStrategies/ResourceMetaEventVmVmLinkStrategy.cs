@@ -7,16 +7,18 @@ using Microsoft.AspNet.Mvc;
 
 namespace Fancy.Feedback.WebApp.LinkStrategies
 {
-    public class DashboardVmLinkStrategy : ILinkStrategy
+    public class ResourceMetaEventVmVmLinkStrategy : ILinkStrategy
     {
         public bool CanLinkType(Type type)
         {
-            return type == typeof (DashboardVm);
+            return type == typeof (ResourceMeta<EventVm>);
         }
 
         public void LinkResource(ResourceBase resource, IUrlHelper urlHelper)
         {
-            resource.AddLink("self", urlHelper.LinkTo<DashboardController>(c => c.Index()));
+            ResourceMeta<EventVm> eventVm = (ResourceMeta<EventVm>)resource;
+            
+            resource.AddLink("self", urlHelper.LinkTo<EventsController>(c => c.Create()));
         }
     }
 }
