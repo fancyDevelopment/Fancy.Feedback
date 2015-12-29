@@ -19,7 +19,7 @@ namespace Fancy.Feedback.WebApp.Controllers
         {
             DashboardVm dashboardVm = new DashboardVm();
 
-            dashboardVm.EventsCount = _eventsService.GetEventsCount();
+            dashboardVm.EventsCount = _eventsService.GetCount();
 
             this.LinkResource(dashboardVm);
 

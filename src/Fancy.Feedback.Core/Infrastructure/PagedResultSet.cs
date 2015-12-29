@@ -3,6 +3,10 @@ using AutoMapper;
 
 namespace Fancy.Feedback.Core.Infrastructure
 {
+    /// <summary>
+    /// Wrapper class to combine a paged result set with metadata.
+    /// </summary>
+    /// <typeparam name="TDto">The type of the dto.</typeparam>
     public class PagedResultSet<TDto>
     {
         /// <summary>
