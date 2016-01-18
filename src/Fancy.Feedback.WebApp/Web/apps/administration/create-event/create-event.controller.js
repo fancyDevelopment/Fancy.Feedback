@@ -10,7 +10,9 @@
             vm.hasError = false;
 
             // Get the required information to render the form
-            vm.formInfo = Events.create();
+            Events.create().then(function(data) {
+                vm.formInfo = data;
+            });
 
             // Add submit function to the scope
             vm.onSubmit = function (form) {
