@@ -90,7 +90,7 @@
 
                             if (actionValue.method === "PUT" || actionValue.method === "POST") {
 
-                                value["execute" + actionKey] = function () {
+                                object[actionKey] = function () {
 
                                     var deferredResponse = $q.defer();
 

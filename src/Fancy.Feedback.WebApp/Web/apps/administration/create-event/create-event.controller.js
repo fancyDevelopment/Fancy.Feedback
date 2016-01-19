@@ -26,16 +26,9 @@
                     vm.hasError = false;
                     vm.isSaving = true;
 
-                    // If the form is valid send data to web application
-                    $http({
-                        method: vm.formInfo.Model._actions.create.method,
-                        url: vm.formInfo.Model._actions.create.href,
-                        data: vm.formInfo.Model
-                    }).success(function () {
-
+                    // If the form is valid send data via hateoas method to web application
+                    vm.formInfo.Model.create().then(function() {
                         vm.isSaving = false;
-
-                        // ToDo: Show save success message
                     });
 
                 } else {
