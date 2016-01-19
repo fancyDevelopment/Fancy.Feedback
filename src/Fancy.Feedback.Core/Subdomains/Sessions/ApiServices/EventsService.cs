@@ -80,12 +80,12 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.ApiServices
         /// </summary>
         /// <param name="id">The identifier of the event to update.</param>
         /// <param name="eventDto">The event dto.</param>
-        public void Update(int id, EventDto eventDto)
+        public void Update(int id, EditEventDto editEventDto)
         {
-            Event @event = _sessionsContext.Events.Single(e => e.Id == eventDto.Id);
+            Event @event = _sessionsContext.Events.Single(e => e.Id == id);
 
             // Update an existing event
-            Mapper.Map(eventDto, @event);
+            Mapper.Map(editEventDto, @event);
 
             _sessionsContext.Commit();
 
@@ -98,15 +98,10 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.ApiServices
         /// <returns>
         /// The id of the saved event.
         /// </returns>
-        public int Save(EventDto eventDto)
+        public int Save(EditEventDto editEventDto)
         {
-            if (eventDto.Id != 0)
-            {
-                throw new InvalidOperationException("Id has to be 0");
-            }
-
             // Create a new entity and add it to the repository
-            Event @event = Mapper.Map<Event>(eventDto);
+            Event @event = Mapper.Map<Event>(editEventDto);
             _sessionsContext.Events.Add(@event);
 
             _sessionsContext.Commit();

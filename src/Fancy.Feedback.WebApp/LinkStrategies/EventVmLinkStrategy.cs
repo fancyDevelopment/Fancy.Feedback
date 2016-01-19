@@ -11,12 +11,12 @@ namespace Fancy.Feedback.WebApp.LinkStrategies
     {
         public bool CanLinkType(Type type)
         {
-            return type == typeof (EventVm);
+            return type == typeof (EditEventVm);
         }
 
         public void LinkResource(ResourceBase resource, IUrlHelper urlHelper)
         {
-            EventVm eventVm = (EventVm)resource;
+            EditEventVm eventVm = (EditEventVm)resource;
 
             resource.AddLink("self", urlHelper.LinkTo<EventsController>(c => c.GetById(eventVm.Id)));
 

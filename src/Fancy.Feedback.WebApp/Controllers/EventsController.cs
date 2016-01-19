@@ -25,7 +25,7 @@ namespace Fancy.Feedback.WebApp.Controllers
         public IActionResult Find(string nameFilter = null, int page = 1, int pageSize = 30)
         {
             PagedResultSet<EventDto> eventDtos = _eventsService.Find(nameFilter, page, pageSize);
-            PagedResultSet<EventVm> eventVms = eventDtos.ConvertTo<EventVm>();
+            PagedResultSet<EditEventVm> eventVms = eventDtos.ConvertTo<EditEventVm>();
 
             return Json(eventVms);
         }
@@ -35,7 +35,7 @@ namespace Fancy.Feedback.WebApp.Controllers
         public IActionResult GetById(int id)
         {
             EventDto eventDto = _eventsService.GetById(id);
-            EventVm eventVm = Mapper.Map<EventVm>(eventDto);
+            EditEventVm eventVm = Mapper.Map<EditEventVm>(eventDto);
 
             return Json(eventVm);
         }
@@ -45,11 +45,11 @@ namespace Fancy.Feedback.WebApp.Controllers
         public IActionResult Create()
         {
             // Create the schema and form description
-            SchemaFormInfo schemaFormInfo = _schemaFormBuilder.CreateSchemaForm(typeof(EventVm));
-            ResourceMeta<EventVm> resourceMeta = new ResourceMeta<EventVm>();
+            SchemaFormInfo schemaFormInfo = _schemaFormBuilder.CreateSchemaForm(typeof(EditEventVm));
+            ResourceMeta<EditEventVm> resourceMeta = new ResourceMeta<EditEventVm>();
             resourceMeta.Schema = schemaFormInfo.Schema;
             resourceMeta.Form = schemaFormInfo.Form;
-            resourceMeta.Model = new EventVm();
+            resourceMeta.Model = new EditEventVm();
 
             this.LinkResource(resourceMeta);
 
@@ -58,9 +58,19 @@ namespace Fancy.Feedback.WebApp.Controllers
 
         [HttpPut]
         [Route("[controller]", Name = "events-create")]
-        public int Create([FromBody] EventDto eventDto)
+        public int Create([FromBody] EditEventVm editEventVm)
         {
-            return 0;
+            EditEventDto editEventDto = Mapper.Map<EditEventDto>(editEventVm);
+            return _eventsService.Save(editEventDto);
+        }
+
+        [HttpPost]
+        [Route("[controller]/{id}", Name = "events-update")]
+        public int Update(int id, [FromBody] EditEventVm editEventVm)
+        {
+            EditEventDto editEventDto = Mapper.Map<EditEventDto>(editEventVm);
+            _eventsService.Update(id, editEventDto);
+            return id;
         }
     }
 }

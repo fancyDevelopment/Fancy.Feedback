@@ -3,7 +3,7 @@ using Fancy.SchemaFormBuilder.Annotations;
 
 namespace Fancy.Feedback.WebApp.ViewModels
 {
-    public class EventVm : ResourceBase
+    public class EditEventVm : ResourceBase
     {
         /// <summary>
         /// Gets or sets the identifier.

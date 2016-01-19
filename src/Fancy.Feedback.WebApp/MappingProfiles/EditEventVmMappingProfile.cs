@@ -4,12 +4,12 @@ using Fancy.Feedback.WebApp.ViewModels;
 
 namespace Fancy.Feedback.WebApp.MappingProfiles
 {
-    public class EventVmMappingProfile : Profile
+    public class EditEventVmMappingProfile : Profile
     {
         protected override void Configure()
         {
-            CreateMap<EventVm, EventDto>();
-            CreateMap<EventDto, EventVm>();
+            CreateMap<EditEventVm, EditEventDto>();
+            CreateMap<EditEventDto, EditEventVm>();
         }
     }
 }
