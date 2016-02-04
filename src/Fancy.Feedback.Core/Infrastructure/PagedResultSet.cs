@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 
+using Fancy.ResourceLinker.Models;
+
 namespace Fancy.Feedback.Core.Infrastructure
 {
     /// <summary>
     /// Wrapper class to combine a paged result set with metadata.
     /// </summary>
     /// <typeparam name="TDto">The type of the dto.</typeparam>
-    public class PagedResultSet<TDto>
+    public class PagedResultSet<TDto> : ResourceBase
     {
         /// <summary>
         /// Gets or sets the page.

@@ -8,8 +8,9 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.MappingProfiles
     {
         protected override void Configure()
         {
-            CreateMap<EventDto, Event>();
-            CreateMap<Event, EventDto>();
+            CreateMap<Event, EventDto>()
+                .ForMember(dest => dest.SessionCount, opt => opt.MapFrom(src => src.Sessions.Count));
+
         }
     }
 }
