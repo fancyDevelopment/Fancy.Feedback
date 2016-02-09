@@ -98,7 +98,7 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.ApiServices
         /// <returns>
         /// The id of the saved event.
         /// </returns>
-        public int Save(EditEventDto editEventDto)
+        public int Create(EditEventDto editEventDto)
         {
             // Create a new entity and add it to the repository
             Event @event = Mapper.Map<Event>(editEventDto);

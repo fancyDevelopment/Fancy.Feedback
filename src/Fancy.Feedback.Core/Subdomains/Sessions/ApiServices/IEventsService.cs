@@ -34,16 +34,14 @@ namespace Fancy.Feedback.Core.Subdomains.Sessions.ApiServices
         /// Updates an event.
         /// </summary>
         /// <param name="id">The identifier of the event to update.</param>
-        /// <param name="eventDto">The event dto.</param>
+        /// <param name="editEventDto">The edit event dto.</param>
         void Update(int id, EditEventDto editEventDto);
 
         /// <summary>
-        /// Saves an event.
+        /// Creates an event.
         /// </summary>
-        /// <param name="eventDto">The event dto.</param>
+        /// <param name="editEventDto">The edit event dto.</param>
         /// <returns>The id of the saved event.</returns>
-        int Save(EditEventDto editEventDto);
-
-
+        int Create(EditEventDto editEventDto);
     }
 }

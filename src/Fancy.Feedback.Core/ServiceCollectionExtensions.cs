@@ -28,6 +28,7 @@ namespace Fancy.Feedback.Core
             serviceCollection.AddTransient<ISessionsContext>(sp => sp.GetService<DomainDbContext>());
 
             serviceCollection.AddTransient<IEventsService, EventsService>();
+            serviceCollection.AddTransient<ISessionService, SessionService>();
 
             // Find all auto mapper profiles and register them
             IEnumerable<Type> profiles = typeof(ServiceCollectionExtensions).GetTypeInfo().Assembly.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x));
