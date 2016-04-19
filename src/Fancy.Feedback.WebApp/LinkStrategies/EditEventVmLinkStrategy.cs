@@ -7,7 +7,7 @@ using Microsoft.AspNet.Mvc;
 
 namespace Fancy.Feedback.WebApp.LinkStrategies
 {
-    public class EventVmLinkStrategy : ILinkStrategy
+    public class EditEventVmLinkStrategy : ILinkStrategy
     {
         public bool CanLinkType(Type type)
         {

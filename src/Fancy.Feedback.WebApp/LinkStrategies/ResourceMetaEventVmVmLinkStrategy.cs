@@ -7,7 +7,7 @@ using Microsoft.AspNet.Mvc;
 
 namespace Fancy.Feedback.WebApp.LinkStrategies
 {
-    public class ResourceMetaEventVmVmLinkStrategy : ILinkStrategy
+    public class ResourceMetaEventVmLinkStrategy : ILinkStrategy
     {
         public bool CanLinkType(Type type)
         {
@@ -18,7 +18,7 @@ namespace Fancy.Feedback.WebApp.LinkStrategies
         {
             ResourceMeta<EditEventVm> eventVm = (ResourceMeta<EditEventVm>)resource;
             
-            resource.AddLink("self", urlHelper.LinkTo<EventsController>(c => c.Create()));
+            resource.AddLink("self", urlHelper.LinkTo<EventsController>(c => c.CreateDesc()));
         }
     }
 }
