@@ -5,7 +5,7 @@
         .config(["$stateProvider", function ($stateProvider) {
 
             $stateProvider
-                // The dashboard main view
+                // The create session view
                 .state('create-session', {
                     url: "/create-session",
                     controller: "CreateSessionController",

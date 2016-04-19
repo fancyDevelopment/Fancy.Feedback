@@ -1,3 +1,19 @@
 ﻿
 
 <h2>Create Session</h2>
+
+<p>Choose the event you want to add a session.</p>
+
+<ul class="list-group">
+    <li ng-repeat="event in vm.events.Items" class="list-group-item clearfix">
+        <!--<span class="badge">{{event.SessionCount}} Sessions</span>-->
+        <span class="pull-right">
+            <span class="badge">{{event.SessionCount}} Sessions</span>&nbsp;&nbsp;
+            <button ng-click="vm.addSession(event)" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </span>
+
+        {{event.Name}}
+    </li>
+</ul>

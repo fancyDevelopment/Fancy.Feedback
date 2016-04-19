@@ -5,7 +5,7 @@
         .service("hateoasResourceService", ["$http", "$q", function ($http, $q) {
 
             // Declare a function to create a hateoas enabled resource
-            this.createHateoasResource = function(baseUrl, operations) {
+            this.createHateoasResource = function (baseUrl, operations) {
 
                 var resource = {};
 
@@ -29,7 +29,7 @@
                     };
                 }
 
-                angular.forEach(operations, function(value, key) {
+                angular.forEach(operations, function (value, key) {
 
                     resource[key] = function (params) {
 
@@ -39,7 +39,7 @@
                             params = {};
                         }
 
-                        angular.forEach(value.params, function(value, key) {
+                        angular.forEach(value.params, function (value, key) {
                             if (!params[key]) {
                                 params[key] = value;
                             }
@@ -106,7 +106,7 @@
 
                                 };
 
-                            } else if (actionValue.method === "GET" || actionValue.method === "DELETE") {
+                            } else if (actionValue.method === "DELETE") {
 
                                 $http({
                                     method: actionValue.method,
@@ -116,6 +116,26 @@
                                 });
 
                             }
+                        });
+                    } else if (key === "_links") {
+
+                        angular.forEach(value, function (actionValue, actionKey) {
+
+                            object[actionKey] = function () {
+
+                                var deferredResponse = $q.defer();
+
+                                $http({
+                                    method: "GET",
+                                    url: actionValue.href
+                                }).then(function (response) {
+                                    deferredResponse.resolve(response.data);
+                                });
+
+                                return deferredResponse.promise;
+
+                            };
+
                         });
                     }
                 });
