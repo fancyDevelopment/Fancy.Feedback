@@ -6,21 +6,34 @@
   "projectUrl": "",
   "licenseUrl": "",
 
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true
+  },
+
   "dependencies": {
-    "EntityFramework.Commands": "7.0.0-rc1-final", 
-    "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
-    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
-    "AutoMapper": "4.1.1",
-    "Fancy.ResourceLinker": ""
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Design": {
+      "version": "1.1.0",
+      "type": "build"
+    },
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
+    "AutoMapper": "5.2.0",
+    "Fancy.ResourceLinker": "0.0.1"
   },
 
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
+    "netcoreapp1.1": {
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "type": "platform",
+                    "version": "1.1.0"
+                }
+            }
+        }
   },
 
-  "commands": {
-    "ef": "EntityFramework.Commands"
+  "tools": {
+    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.1.0-preview4-final"
   }
 }

@@ -1,6 +1,6 @@
 ﻿using Fancy.Feedback.Core.Infrastructure;
 using Fancy.Feedback.Core.Subdomains.Sessions.Domain;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fancy.Feedback.Core.Subdomains.Sessions.Repositories
 {

@@ -1,8 +1,8 @@
 ﻿using Fancy.Feedback.Core.Subdomains.Identity.Domain;
 using Fancy.Feedback.Core.Subdomains.Sessions.Domain;
 using Fancy.Feedback.Core.Subdomains.Sessions.Repositories;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fancy.Feedback.Core.Infrastructure
 {
@@ -33,6 +33,11 @@ namespace Fancy.Feedback.Core.Infrastructure
         /// The feedbacks.
         /// </value>
         public DbSet<Subdomains.Feedbacks.Domain.Feedback> Feedbacks { get; set; }
+
+        public DomainDbContext(DbContextOptions<DomainDbContext> options)
+            : base(options)
+        {
+        }
 
         /// <summary>
         /// Called when configuring the model.

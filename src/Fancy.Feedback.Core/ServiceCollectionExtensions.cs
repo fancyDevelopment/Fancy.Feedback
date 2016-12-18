@@ -5,9 +5,9 @@ using Fancy.Feedback.Core.Infrastructure;
 using Fancy.Feedback.Core.Subdomains.Sessions.ApiServices;
 using Fancy.Feedback.Core.Subdomains.Sessions.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Data.Entity;
 
 namespace Fancy.Feedback.Core
 {
@@ -20,9 +20,7 @@ namespace Fancy.Feedback.Core
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddFancyFeedbackCore(this IServiceCollection serviceCollection, string dbConnectionString)
         {
-            serviceCollection.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<DomainDbContext>(options => options.UseSqlServer(dbConnectionString));
+            serviceCollection.AddDbContext<DomainDbContext>(options => options.UseSqlServer(dbConnectionString));
 
             // Register sessions subdomain
             serviceCollection.AddTransient<ISessionsContext>(sp => sp.GetService<DomainDbContext>());
@@ -35,7 +33,7 @@ namespace Fancy.Feedback.Core
 
             foreach (Type profile in profiles)
             {
-                Mapper.AddProfile(Activator.CreateInstance(profile) as Profile);
+                Mapper.Initialize(cfg => cfg.AddProfile(Activator.CreateInstance(profile) as Profile));
             }
 
             return serviceCollection;
