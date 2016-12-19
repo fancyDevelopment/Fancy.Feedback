@@ -8,8 +8,6 @@
 
             vm.events = Events.query();
 
-            var createEvent = Events.create();
-
         }]);
 
 }());

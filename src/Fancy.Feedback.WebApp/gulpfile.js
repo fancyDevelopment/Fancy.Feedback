@@ -54,7 +54,7 @@ gulp.task("min:jquery:js", function () {
 
     // Get all reguired sources bundle them
     gulp.src([
-            './bower_components/jquery/dist/jquery.js',
+            './bower_components/jquery/jquery.js',
             './bower_components/jquery-validation/dist/jquery.validate.js',
             './bower_components/jquery-validation/dist/additional-methods.js',
             './bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js',

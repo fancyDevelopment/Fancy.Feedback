@@ -5,7 +5,7 @@ using Fancy.Feedback.Core.Subdomains.Sessions.Dtos;
 using Fancy.Feedback.WebApp.ViewModels;
 using Fancy.ResourceLinker;
 using Fancy.SchemaFormBuilder.Services;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fancy.Feedback.WebApp.Controllers
 {

@@ -27,7 +27,7 @@
                     vm.isSaving = true;
 
                     // If the form is valid send data via hateoas method to web application
-                    vm.formInfo.Model.create().then(function() {
+                    vm.formInfo.model.create().then(function() {
                         vm.isSaving = false;
                     });
 

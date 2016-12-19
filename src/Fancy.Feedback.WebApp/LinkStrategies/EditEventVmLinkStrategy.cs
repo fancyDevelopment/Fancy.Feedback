@@ -3,7 +3,7 @@ using Fancy.Feedback.WebApp.Controllers;
 using Fancy.Feedback.WebApp.ViewModels;
 using Fancy.ResourceLinker;
 using Fancy.ResourceLinker.Models;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fancy.Feedback.WebApp.LinkStrategies
 {

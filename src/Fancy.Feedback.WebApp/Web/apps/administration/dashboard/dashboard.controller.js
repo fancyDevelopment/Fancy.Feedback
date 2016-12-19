@@ -6,9 +6,9 @@
 
             var vm = this;
 
-            $http.get("/dashboard").success(function(data) {
+            $http.get("/dashboard").then(function(response) {
 
-                vm.data = data;
+                vm.data = response.data;
 
             });
 

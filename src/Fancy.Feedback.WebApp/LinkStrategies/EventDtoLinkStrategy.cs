@@ -4,7 +4,7 @@ using Fancy.Feedback.Core.Subdomains.Sessions.Dtos;
 using Fancy.Feedback.WebApp.Controllers;
 using Fancy.ResourceLinker;
 using Fancy.ResourceLinker.Models;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fancy.Feedback.WebApp.LinkStrategies
 {

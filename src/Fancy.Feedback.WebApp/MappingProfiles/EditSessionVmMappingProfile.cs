@@ -6,7 +6,7 @@ namespace Fancy.Feedback.WebApp.MappingProfiles
 {
     public class EditSessionVmMappingProfile : Profile
     {
-        protected override void Configure()
+        public EditSessionVmMappingProfile()
         {
             CreateMap<EditSessionVm, EditSessionDto>();
             CreateMap<EditSessionDto, EditSessionVm>();

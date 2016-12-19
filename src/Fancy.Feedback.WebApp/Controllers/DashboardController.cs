@@ -1,7 +1,7 @@
 ﻿using Fancy.Feedback.Core.Subdomains.Sessions.ApiServices;
 using Fancy.Feedback.WebApp.ViewModels;
 using Fancy.ResourceLinker;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fancy.Feedback.WebApp.Controllers
 {
@@ -14,7 +14,7 @@ namespace Fancy.Feedback.WebApp.Controllers
             _eventsService = eventsService;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "Dashboard index")]
         public IActionResult Index()
         {
             DashboardVm dashboardVm = new DashboardVm();

@@ -4,10 +4,9 @@ using AutoMapper;
 using Fancy.Feedback.Core;
 using Fancy.Feedback.Core.Infrastructure;
 using Fancy.Feedback.Core.Subdomains.Identity.Domain;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,6 +15,9 @@ using Fancy.SchemaFormBuilder;
 using System.Linq;
 using System.Reflection;
 using Fancy.ResourceLinker;
+using Microsoft.EntityFrameworkCore;
+using Fancy.Feedback.WebApp.MappingProfiles;
+using Fancy.Feedback.Core.Subdomains.Sessions.MappingProfiles;
 
 namespace Fancy.Feedback.WebApp
 {
@@ -25,14 +27,9 @@ namespace Fancy.Feedback.WebApp
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -59,12 +56,11 @@ namespace Fancy.Feedback.WebApp
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             // Find all auto mapper profiles and register them
+            List<Type> coreProfiles = typeof(EditEventDtoMappingProfile).GetTypeInfo().Assembly.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x)).ToList();
             IEnumerable<Type> profiles = typeof(Startup).GetTypeInfo().Assembly.GetTypes().Where(x => typeof(Profile).IsAssignableFrom(x));
 
-            foreach (Type profile in profiles)
-            {
-                Mapper.AddProfile(Activator.CreateInstance(profile) as Profile);
-            }
+            coreProfiles.AddRange(profiles);
+            Mapper.Initialize(cfg => cfg.AddProfiles(coreProfiles));
 
             // Find all link strategies and register them
             IEnumerable<Type> linkStrategies = typeof(Startup).GetTypeInfo().Assembly.GetTypes().Where(x => typeof(ILinkStrategy).IsAssignableFrom(x));
@@ -76,14 +72,18 @@ namespace Fancy.Feedback.WebApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            ILogger startupLogger = loggerFactory.CreateLogger("Startup");
+
+            // Ensure database is created and migrated
+            startupLogger.LogInformation("Migrating database...");
+            DomainDbContext dbContext = serviceProvider.GetService<DomainDbContext>();
+            dbContext.Database.Migrate();
 
             if (env.IsDevelopment())
             {
-                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -104,8 +104,6 @@ namespace Fancy.Feedback.WebApp
                 catch { }
             }
 
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
             app.UseStaticFiles();
 
             app.UseIdentity();
@@ -119,8 +117,5 @@ namespace Fancy.Feedback.WebApp
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }
